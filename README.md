@@ -2,7 +2,7 @@
 
 This repository contains Jupyter notebooks used for exploring, modeling, and forecasting sales. A live Streamlit deployment of the project is available at:
 
-https://salesforecastings.streamlit.app/
+https://sales0forecasting.streamlit.app/
 
 ## Overview
 
@@ -12,13 +12,13 @@ https://salesforecastings.streamlit.app/
 
 ## Live Demo
 
-Open the deployed Streamlit app: https://salesforecastings.streamlit.app/
+Open the deployed Streamlit app: https://sales0forecasting.streamlit.app/
 
 ## Quick start (local)
 
 1. Clone the repository
 
-   git clone https://github.com/Suhani-prog-alt/SalesForecasting_Suhani2.git
+   git clone https://github.com/Suhani-prog-alt/SalesForecasting_Suhani.git
    cd SalesForecasting_Suhani2
 
 2. (Recommended) Create a virtual environment
