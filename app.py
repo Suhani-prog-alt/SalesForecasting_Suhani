@@ -278,7 +278,13 @@ elif page == "Forecast Explorer":
     # Plot forecast using Prophet's interactive Plotly chart
     from prophet.plot import plot_plotly
     fig = plot_plotly(current_model, forecast)
-    fig.update_layout(title=f'Monthly Sales Forecast for {selected_segment}', xaxis_title='Date', yaxis_title='Monthly Sales')
+    fig.update_layout(
+        title=f'Monthly Sales Forecast for {selected_segment}', 
+        xaxis_title='Date', 
+        yaxis_title='Monthly Sales',
+        height=550
+    )
+    fig.update_yaxes(rangemode="tozero")
     st.plotly_chart(fig, use_container_width=True)
 
     st.write("### Model Performance")
