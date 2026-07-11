@@ -137,7 +137,7 @@ def calculate_segment_rmse(segment_data, periods=3):
     Uses last 12 months as test set.
     """
     if len(segment_data) < 15:  # Need at least 15 months for meaningful split
-        return None
+        return None, None, None
     
     # Split data: last 12 months for test
     train_size = len(segment_data) - 12
@@ -160,7 +160,7 @@ def calculate_segment_rmse(segment_data, periods=3):
     # Calculate RMSE
     rmse = np.sqrt(mean_squared_error(test_actual, test_predictions))
     
-    return rmse
+    return rmse, test_data, test_predictions
 
 # --- Load all data needed for the app once ---
 file_path = './train.csv' # Local deployment path
@@ -290,11 +290,19 @@ elif page == "Forecast Explorer":
     st.write("### Model Performance")
     
     # Calculate segment-specific RMSE
-    segment_rmse = calculate_segment_rmse(data_for_prophet)
+    segment_rmse, test_data, test_predictions = calculate_segment_rmse(data_for_prophet)
     
     if segment_rmse is not None:
         st.write(f"**Segment-Specific Prophet Model RMSE:** {segment_rmse:.2f}")
         st.info(f"This RMSE is calculated using the last 12 months as test data for the {selected_segment} segment.")
+        
+        import plotly.graph_objects as go
+        perf_fig = go.Figure()
+        perf_fig.add_trace(go.Scatter(x=test_data['ds'], y=test_data['y'], mode='lines+markers', name='Actual Sales', line=dict(color='blue')))
+        perf_fig.add_trace(go.Scatter(x=test_data['ds'], y=test_predictions, mode='lines+markers', name='Predicted Sales', line=dict(color='red', dash='dash')))
+        perf_fig.update_layout(title='Model Performance: Actual vs Predicted (12-Month Holdout)', xaxis_title='Date', yaxis_title='Sales', height=500)
+        perf_fig.update_yaxes(rangemode="tozero")
+        st.plotly_chart(perf_fig, use_container_width=True)
     else:
         st.write(f"**Overall Prophet Model RMSE (from Task 3):** {overall_rmse_prophet:.2f}")
         st.warning(f"Insufficient data to calculate segment-specific RMSE for {selected_segment}. Displaying overall model RMSE instead.")
