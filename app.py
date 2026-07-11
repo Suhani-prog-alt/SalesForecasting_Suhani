@@ -275,9 +275,11 @@ elif page == "Forecast Explorer":
     # Generate forecast
     forecast = get_prophet_forecast(current_model, periods=forecast_horizon)
 
-    # Plot forecast using Prophet's built-in plot
-    fig = current_model.plot(forecast)
-    st.pyplot(fig)
+    # Plot forecast using Prophet's interactive Plotly chart
+    from prophet.plot import plot_plotly
+    fig = plot_plotly(current_model, forecast)
+    fig.update_layout(title=f'Monthly Sales Forecast for {selected_segment}', xaxis_title='Date', yaxis_title='Monthly Sales')
+    st.plotly_chart(fig, use_container_width=True)
 
     st.write("### Model Performance")
     
